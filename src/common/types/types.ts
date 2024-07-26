@@ -1,0 +1,1 @@
+export type Action<T extends (...arg: any)=> any> = Omit<ReturnType<T>, 'meta'>
