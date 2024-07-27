@@ -7,7 +7,7 @@ import {
   UpdateTaskModelType
 } from "api/todolists-api";
 import { AppDispatch, AppRootStateType, AppThunk } from "app/store";
-import { handleServerAppError, handleServerNetworkError } from "utils/error-utils";
+import { handleServerAppError, handleServerNetworkError } from "utils/handleServerNetworkError";
 import { appActions } from "app/app.reducer";
 import { todolistsActions } from "features/TodolistsList/todolists.reducer";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
@@ -63,6 +63,12 @@ const slice = createSlice({
 export const tasksReducer = slice.reducer;
 export const tasksActions = slice.actions;
 
+enum ResultCode {
+  Success,
+  Error = 1,
+  Captcha = 10,
+}
+
 // thunks
 
 export const fetchTasksTC = createAppAsyncThunk<
@@ -111,7 +117,7 @@ export const addTaskTC = createAppAsyncThunk<{
       try {
         const res = await todolistsAPI.createTask(arg);
 
-        if (res.data.resultCode === 0) {
+        if (res.data.resultCode === ResultCode.Success) {
           const task = res.data.data.item;
           return { task };
         } else {
@@ -149,10 +155,14 @@ export const updateTaskTC = createAppAsyncThunk<UpdateTaskType, UpdateTaskType>(
       ...arg.domainModel
     };
 
-    const res = await todolistsAPI.updateTask({taskId: arg.taskId, todolistId: arg.todolistId, domainModel: apiModel});
+    const res = await todolistsAPI.updateTask({
+      taskId: arg.taskId,
+      todolistId: arg.todolistId,
+      domainModel: apiModel
+    });
 
-    if (res.data.resultCode === 0) {
-      return { taskId: arg.taskId, domainModel: arg.domainModel, todolistId: arg.todolistId };
+    if (res.data.resultCode === ResultCode.Success) {
+      return arg;
     } else {
       handleServerAppError(res.data, dispatch);
       return rejectWithValue(null);
