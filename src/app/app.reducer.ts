@@ -1,7 +1,7 @@
 import { Dispatch } from "redux";
-import { authAPI } from "api/todolists-api";
-import { authActions } from "features/auth/auth.reducer";
+import { authActions } from "features/auth/model/auth.slice";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { authAPI } from "../features/auth/api/auth.api";
 
 const initialState = {
   status: "idle" as RequestStatusType,

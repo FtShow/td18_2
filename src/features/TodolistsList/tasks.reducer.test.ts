@@ -3,11 +3,13 @@ import {
   fetchTasksTC,
   tasksActions,
   tasksReducer,
-  TasksStateType, updateTaskTC
+  TasksStateType,
+  updateTaskTC
 } from "features/TodolistsList/tasks.reducer";
-import { TaskPriorities, TaskStatuses } from "api/todolists-api";
+
 import { todolistsActions } from "features/TodolistsList/todolists.reducer";
 import { Action } from "../../common/types/types";
+import { TaskPriorities, TaskStatuses } from "../../common/emuns/enums";
 
 let startState: TasksStateType = {};
 beforeEach(() => {

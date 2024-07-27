@@ -1,8 +1,9 @@
-import { ResponseType } from "../api/todolists-api";
+import { } from "../../features/TodolistsList/todolists-api";
 import { Dispatch } from "redux";
-import { appActions } from "../app/app.reducer";
+import { appActions } from "../../app/app.reducer";
+import { BaseResponse } from "../types/types";
 
-export const handleServerAppError = <D>(data: ResponseType<D>, dispatch: Dispatch) => {
+export const handleServerAppError = <D>(data: BaseResponse<D>, dispatch: Dispatch) => {
   if (data.messages.length) {
     dispatch(appActions.setAppError({ error: data.messages[0] }));
   } else {

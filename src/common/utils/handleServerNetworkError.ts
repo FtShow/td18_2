@@ -1,12 +1,9 @@
-import { ResponseType } from "api/todolists-api";
-import { Dispatch } from "redux";
 import { appActions } from "app/app.reducer";
-import { AppDispatch } from "../app/store";
+import { AppDispatch } from "../../app/store";
 import axios from "axios";
 
 
-
-export const handleServerNetworkError = (err: unknown, dispatch: AppDispatch):void => {
+export const handleServerNetworkError = (err: unknown, dispatch: AppDispatch): void => {
   let errorMessage = "Some error occurred";
 
   // ❗Проверка на наличие axios ошибки
