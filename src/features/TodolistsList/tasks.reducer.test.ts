@@ -7,7 +7,12 @@ import {
   updateTaskTC
 } from "features/TodolistsList/tasks.reducer";
 
-import { fetchTodolistsTC, removeTodolistTC, todolistsActions } from "features/TodolistsList/todolists.reducer";
+import {
+  fetchTodolistsTC,
+  removeTodolistTC,
+  todolistsActions,
+  todolistsThunks
+} from "features/TodolistsList/todolists.reducer";
 import { Action } from "../../common/types/types";
 import { TaskPriorities, TaskStatuses } from "../../common/emuns/enums";
 
@@ -174,14 +179,14 @@ test("title of specified task should be changed", () => {
 });
 
 test("new array should be added when new todolist is added", () => {
-  const action = todolistsActions.addTodolist({
+  const action = todolistsThunks.addTodolistTC.fulfilled({
     todolist: {
       id: "blabla",
       title: "new todolist",
       order: 0,
       addedDate: ""
     }
-  });
+  }, '', "new todolist");
 
   const endState = tasksReducer(startState, action);
 

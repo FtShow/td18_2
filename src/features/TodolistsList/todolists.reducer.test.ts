@@ -1,4 +1,5 @@
 import {
+  addTodolistTC, changeTodolistTitleTC,
   fetchTodolistsTC,
   FilterValuesType, removeTodolistTC,
   TodolistDomainType,
@@ -41,7 +42,11 @@ test("correct todolist should be added", () => {
     order: 0,
   };
 
-  const endState = todolistsReducer(startState, todolistsActions.addTodolist({ todolist }));
+
+  const endState = todolistsReducer(
+    startState,
+    todolistsThunks.addTodolistTC.fulfilled({ todolist }, "requestId", todolist.title),
+  );
 
   expect(endState.length).toBe(3);
   expect(endState[0].title).toBe(todolist.title);
@@ -51,7 +56,7 @@ test("correct todolist should be added", () => {
 test("correct todolist should change its name", () => {
   let newTodolistTitle = "New Todolist";
 
-  const action = todolistsActions.changeTodolistTitle({ id: todolistId2, title: newTodolistTitle });
+  const action = todolistsThunks.changeTodolistTitleTC.fulfilled({ id: todolistId2, title: newTodolistTitle }, '111', { id: todolistId2, title: newTodolistTitle });
 
   const endState = todolistsReducer(startState, action);
 
