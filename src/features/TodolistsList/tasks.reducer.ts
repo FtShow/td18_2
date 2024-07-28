@@ -51,7 +51,7 @@ const slice = createSlice({
           tasks[index] = { ...tasks[index], ...action.payload.domainModel };
         }
       })
-      .addCase(todolistsActions.addTodolist, (state, action) => {
+      .addCase(todolistsThunks.addTodolistTC.fulfilled, (state, action) => {
         state[action.payload.todolist.id] = [];
       })
       .addCase(todolistsThunks.removeTodolistTC.fulfilled, (state, action) => {
@@ -71,7 +71,7 @@ const slice = createSlice({
 export const tasksReducer = slice.reducer;
 export const tasksActions = slice.actions;
 
-enum ResultCode {
+export enum ResultCode {
   Success,
   Error = 1,
   Captcha = 10,
@@ -220,7 +220,7 @@ export type UpdateTaskType = {
 //       const res = todolistsAPI
 //         .updateTask(todolistId, taskId, apiModel)
 //         .then((res) => {
-//           if (res.data.resultCode === 0) {
+//           if (res.data.resultCode === ResultCode.success) {
 //             dispatch(tasksActions.updateTask({ taskId, model: domainModel, todolistId }));
 //           } else {
 //             handleServerAppError(res.data, dispatch);

@@ -7,6 +7,7 @@ import { authAPI } from "../api/auth.api";
 import { handleServerAppError } from "../../../common/utils/handleServerAppError";
 import { handleServerNetworkError } from "../../../common/utils/handleServerNetworkError";
 import { LoginParamsType } from "../api/auth.api.types";
+import { ResultCode } from "../../TodolistsList/tasks.reducer";
 
 const slice = createSlice({
   name: "auth",
@@ -31,7 +32,7 @@ export const loginTC =
     authAPI
       .login(data)
       .then((res) => {
-        if (res.data.resultCode === 0) {
+        if (res.data.resultCode === ResultCode.Success) {
           dispatch(authActions.setIsLoggedIn({ isLoggedIn: true }));
           dispatch(appActions.setAppStatus({ status: "succeeded" }));
         } else {
@@ -48,7 +49,7 @@ export const logoutTC = (): AppThunk => (dispatch) => {
   authAPI
     .logout()
     .then((res) => {
-      if (res.data.resultCode === 0) {
+      if (res.data.resultCode === ResultCode.Success) {
         dispatch(authActions.setIsLoggedIn({ isLoggedIn: false }));
         dispatch(clearTasksAndTodolists());
         dispatch(appActions.setAppStatus({ status: "succeeded" }));
