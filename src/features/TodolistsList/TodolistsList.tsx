@@ -39,8 +39,8 @@ export const TodolistsList: React.FC<PropsType> = ({ demo = false }) => {
     dispatch(thunk);
   }, []);
 
-  const removeTask = useCallback(function (id: string, todolistId: string) {
-    const thunk = removeTaskTC(id, todolistId);
+  const removeTask = useCallback(function (taskId: string, todolistId: string) {
+    const thunk = removeTaskTC({ taskId, todolistId });
     dispatch(thunk);
   }, []);
 
@@ -64,7 +64,7 @@ export const TodolistsList: React.FC<PropsType> = ({ demo = false }) => {
   }, []);
 
   const removeTodolist = useCallback(function (id: string) {
-    const thunk = removeTodolistTC(id);
+    const thunk = removeTodolistTC({id: id});
     dispatch(thunk);
   }, []);
 
