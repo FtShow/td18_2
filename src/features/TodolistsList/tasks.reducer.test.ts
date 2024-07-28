@@ -1,13 +1,13 @@
 import {
   addTaskTC,
-  fetchTasksTC,
+  fetchTasksTC, removeTaskTC,
   tasksActions,
   tasksReducer,
   TasksStateType,
   updateTaskTC
 } from "features/TodolistsList/tasks.reducer";
 
-import { todolistsActions } from "features/TodolistsList/todolists.reducer";
+import { fetchTodolistsTC, removeTodolistTC, todolistsActions } from "features/TodolistsList/todolists.reducer";
 import { Action } from "../../common/types/types";
 import { TaskPriorities, TaskStatuses } from "../../common/emuns/enums";
 
@@ -94,7 +94,14 @@ beforeEach(() => {
 });
 
 test("correct task should be deleted from correct array", () => {
-  const action = tasksActions.removeTask({ taskId: "2", todolistId: "todolistId2" });
+  const action: Action<typeof removeTaskTC.fulfilled> = removeTaskTC.fulfilled({
+    taskId: "2",
+    todolistId: "todolistId2"
+  }, "", {
+    taskId: "2",
+    todolistId: "todolistId2"
+  });
+
 
   const endState = tasksReducer(startState, action);
 
@@ -104,7 +111,7 @@ test("correct task should be deleted from correct array", () => {
 });
 
 test("correct task should be added to correct array", () => {
-  type Action<T extends (...arg: any)=> any> = Omit<ReturnType<T>, 'meta'>
+  type Action<T extends (...arg: any) => any> = Omit<ReturnType<T>, "meta">
   //const action = addTaskAC("juce", "todolistId2");
   const action: Action<typeof addTaskTC.fulfilled> = addTaskTC.fulfilled({
 
@@ -119,8 +126,8 @@ test("correct task should be added to correct array", () => {
       priority: 0,
       startDate: "",
       id: "id exists"
-    },
-  }, "requestId", {title: 'newT', todoListId: 'todolistId2' })
+    }
+  }, "requestId", { title: "newT", todoListId: "todolistId2" });
 
   const endState = tasksReducer(startState, action);
 
@@ -189,7 +196,8 @@ test("new array should be added when new todolist is added", () => {
 });
 
 test("propertry with todolistId should be deleted", () => {
-  const action = todolistsActions.removeTodolist({ id: "todolistId2" });
+  const action: Action<typeof removeTodolistTC.fulfilled> =
+    removeTodolistTC.fulfilled({ id: "todolistId2" }, '', { id: "todolistId2" })
 
   const endState = tasksReducer(startState, action);
 
@@ -200,12 +208,12 @@ test("propertry with todolistId should be deleted", () => {
 });
 
 test("empty arrays should be added when we set todolists", () => {
-  const action = todolistsActions.setTodolists({
+  const action: Action<typeof fetchTodolistsTC.fulfilled> = fetchTodolistsTC.fulfilled({
     todolists: [
       { id: "1", title: "title 1", order: 0, addedDate: "" },
       { id: "2", title: "title 2", order: 0, addedDate: "" }
     ]
-  });
+  }, '', );
 
   const endState = tasksReducer({}, action);
 
@@ -218,7 +226,7 @@ test("empty arrays should be added when we set todolists", () => {
 
 test("tasks should be added for todolist", () => {
 
-  const action: Action<typeof fetchTasksTC.fulfilled> =  fetchTasksTC.fulfilled({
+  const action: Action<typeof fetchTasksTC.fulfilled> = fetchTasksTC.fulfilled({
     tasks: startState["todolistId1"],
     todolistId: "todolistId1"
   }, "requestId", "todolistId1");
